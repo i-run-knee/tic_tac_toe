@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from ai_player import ai_move  # Importing AI move logic from ai_player.py
+from ai_player import random_ai_move, greedy_ai_move, blocking_ai_move  # Import all AI strategies
 
 # Function to check for a win
 def check_win(board, player):
@@ -48,7 +48,7 @@ def on_click(index):
 # AI's turn to play
 def ai_turn():
     global current_player
-    move = ai_move(board)  # AI move from the ai_player.py file
+    move = ai_algorithm(board)  # Use the selected AI algorithm
     board[move] = 'O'
     buttons[move].config(text='O')
 
@@ -71,9 +71,31 @@ def reset_game():
     for button in buttons:
         button.config(text='')
 
-# Create the main window
+# Function to choose the AI algorithm
+def choose_ai(algorithm):
+    global ai_algorithm
+    ai_algorithm = algorithm
+    root.deiconify()  # Show the main window
+    ai_choice_window.destroy()  # Close the AI selection window
+
+# Create the AI selection window
+ai_choice_window = tk.Tk()
+ai_choice_window.title("Choose AI Player")
+
+tk.Label(ai_choice_window, text="Choose the AI strategy").pack(pady=10)
+
+random_button = tk.Button(ai_choice_window, text="Random AI", command=lambda: choose_ai(random_ai_move))
+random_button.pack(pady=5)
+
+greedy_button = tk.Button(ai_choice_window, text="Greedy AI", command=lambda: choose_ai(greedy_ai_move))
+greedy_button.pack(pady=5)
+
+blocking_button = tk.Button(ai_choice_window, text="Blocking AI", command=lambda: choose_ai(blocking_ai_move))
+blocking_button.pack(pady=5)
+
+# Hide the main game window until AI is selected
 root = tk.Tk()
-root.title("Tic-Tac-Toe")
+root.withdraw()
 
 # Initialize game variables
 current_player = 'X'
@@ -88,5 +110,9 @@ for i in range(9):
     button.grid(row=i // 3, column=i % 3)
     buttons.append(button)
 
-# Start the game loop
+# Start the AI selection window
+ai_choice_window.mainloop()
+
+# Start the main game loop (after AI choice)
 root.mainloop()
+
