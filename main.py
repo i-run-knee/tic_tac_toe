@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from ai_player import random_ai_move, greedy_ai_move, blocking_ai_move  # Import all AI strategies
+from ai_player import random_ai_move, greedy_ai_move, blocking_ai_move, minimax_ai_move  # Import all AI strategies
 
 # Function to check for a win
 def check_win(board, player):
@@ -93,6 +93,9 @@ greedy_button.pack(pady=5)
 blocking_button = tk.Button(ai_choice_window, text="Blocking AI", command=lambda: choose_ai(blocking_ai_move))
 blocking_button.pack(pady=5)
 
+minimax_button = tk.Button(ai_choice_window, text="Minimax AI", command=lambda: choose_ai(minimax_ai_move))
+minimax_button.pack(pady=5)
+
 # Hide the main game window until AI is selected
 root = tk.Tk()
 root.withdraw()
@@ -113,6 +116,4 @@ for i in range(9):
 # Start the AI selection window
 ai_choice_window.mainloop()
 
-# Start the main game loop (after AI choice)
-root.mainloop()
-
+# Start the

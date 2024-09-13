@@ -44,3 +44,46 @@ def blocking_ai_move(board):
 
     # Step 2: If no block, use greedy AI strategy
     return greedy_ai_move(board)
+
+def minimax(board, depth, is_maximizing):
+    """Minimax algorithm to choose the best move for AI."""
+    # Terminal states
+    if check_win(board, 'O'):
+        return 10 - depth
+    if check_win(board, 'X'):
+        return depth - 10
+    if ' ' not in board:
+        return 0
+
+    if is_maximizing:
+        best_score = -float('inf')
+        for move in [i for i, spot in enumerate(board) if spot == ' ']:
+            board[move] = 'O'
+            score = minimax(board, depth + 1, False)
+            board[move] = ' '
+            best_score = max(score, best_score)
+        return best_score
+    else:
+        best_score = float('inf')
+        for move in [i for i, spot in enumerate(board) if spot == ' ']:
+            board[move] = 'X'
+            score = minimax(board, depth + 1, True)
+            board[move] = ' '
+            best_score = min(score, best_score)
+        return best_score
+
+def minimax_ai_move(board):
+    """Minimax AI chooses the best move based on minimax evaluation."""
+    best_move = None
+    best_score = -float('inf')
+
+    for move in [i for i, spot in enumerate(board) if spot == ' ']:
+        board[move] = 'O'
+        score = minimax(board, 0, False)
+        board[move] = ' '
+        if score > best_score:
+            best_score = score
+            best_move = move
+
+    return best_move
+
