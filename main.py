@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from ai_player import random_ai_move, greedy_ai_move, blocking_ai_move, minimax_ai_move  # Import all AI strategies
+from ai_player import random_ai_move, greedy_ai_move, blocking_ai_move, minimax_ai_move, get_ai_move, EPSILON
 
 # Function to check for a win
 def check_win(board, player):
@@ -48,7 +48,7 @@ def on_click(index):
 # AI's turn to play
 def ai_turn():
     global current_player
-    move = ai_algorithm(board)  # Use the selected AI algorithm
+    move = get_ai_move(board, ai_algorithm, EPSILON)  # Use the selected AI algorithm
     board[move] = 'O'
     buttons[move].config(text='O')
 
@@ -84,17 +84,20 @@ ai_choice_window.title("Choose AI Player")
 
 tk.Label(ai_choice_window, text="Choose the AI strategy").pack(pady=10)
 
-random_button = tk.Button(ai_choice_window, text="Random AI", command=lambda: choose_ai(random_ai_move))
+random_button = tk.Button(ai_choice_window, text="Random AI", command=lambda: choose_ai('random'))
 random_button.pack(pady=5)
 
-greedy_button = tk.Button(ai_choice_window, text="Greedy AI", command=lambda: choose_ai(greedy_ai_move))
+greedy_button = tk.Button(ai_choice_window, text="Greedy AI", command=lambda: choose_ai('greedy'))
 greedy_button.pack(pady=5)
 
-blocking_button = tk.Button(ai_choice_window, text="Blocking AI", command=lambda: choose_ai(blocking_ai_move))
+blocking_button = tk.Button(ai_choice_window, text="Blocking AI", command=lambda: choose_ai('blocking'))
 blocking_button.pack(pady=5)
 
-minimax_button = tk.Button(ai_choice_window, text="Minimax AI", command=lambda: choose_ai(minimax_ai_move))
+minimax_button = tk.Button(ai_choice_window, text="Minimax AI", command=lambda: choose_ai('minimax'))
 minimax_button.pack(pady=5)
+
+q_learning_button = tk.Button(ai_choice_window, text="Q-Learning AI", command=lambda: choose_ai('q_learning'))
+q_learning_button.pack(pady=5)
 
 # Hide the main game window until AI is selected
 root = tk.Tk()
@@ -115,5 +118,3 @@ for i in range(9):
 
 # Start the AI selection window
 ai_choice_window.mainloop()
-
-# Start the
