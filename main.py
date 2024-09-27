@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from ai_player import random_ai_move, greedy_ai_move, blocking_ai_move, minimax_ai_move, get_ai_move, EPSILON
+from ai_player import random_ai_move, greedy_ai_move, blocking_ai_move, minimax_ai_move, get_ai_move, EPSILON, train_q_learning
 
 # Function to check for a win
 def check_win(board, player):
@@ -78,6 +78,12 @@ def choose_ai(algorithm):
     root.deiconify()  # Show the main window
     ai_choice_window.destroy()  # Close the AI selection window
 
+# Training mode function
+def start_training():
+    train_q_learning(num_games=10000)  # Run the Q-learning training
+    messagebox.showinfo("Training Complete", "Q-Learning training is complete!")
+    reset_game()
+
 # Create the AI selection window
 ai_choice_window = tk.Tk()
 ai_choice_window.title("Choose AI Player")
@@ -98,6 +104,9 @@ minimax_button.pack(pady=5)
 
 q_learning_button = tk.Button(ai_choice_window, text="Q-Learning AI", command=lambda: choose_ai('q_learning'))
 q_learning_button.pack(pady=5)
+
+training_button = tk.Button(ai_choice_window, text="Train Q-Learning", command=start_training)
+training_button.pack(pady=20)
 
 # Hide the main game window until AI is selected
 root = tk.Tk()
